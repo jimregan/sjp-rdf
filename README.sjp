@@ -1,0 +1,19 @@
+Słownik ortograficzny, języka polskiego, wyrazów obcych i słownik do gier w jednym.
+Zastosowania: sprawdzanie poprawności słów, znaczeń i dopuszczalności w grach słownych.
+
+Słownik jest rozwijany z myślą o trzech głównych zastosowaniach:
+
+do sprawdzania pisowni w programach open-source (Firefox, OpenOffice)
+do gier słownych (w szczególności literaki)
+do użytku przez WWW jako kilka rodzajów słowników w jednym.
+Redakcją słownika zajmują się hobbyści pod okiem internautów udzielających się w komentarzach.
+
+Znaczenia słów są wprowadzane jak na stronach wiki (trzeba być zalogowanym).
+
+Słownik jest udostępniany na licencjach: GPL i CC SA, a w wersji do sprawdzania pisowni (aspell/ispell/myspell) dodatkowo LGPL i MPL.
+
+Pierwsza wersja słownika (słownik alternatywny) powstała na bazie dawnego słownika do ispella.
+
+Kontakt w sprawach technicznych: Marek Futrega, futrega@gmail.com
+
+©2011 Zespół SJP.pl
