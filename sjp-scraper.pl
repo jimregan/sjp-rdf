@@ -8,7 +8,7 @@ use Data::Dumper;
 use URI::Escape;
 use HTML::Entities;
 
-open (my $fh, ">/tmp/writer.rdf");
+open (my $fh, ">>/tmp/writer.rdf");
 my ($word, $escword);
 my $reading = 0;
 my $debug = 1;
@@ -52,6 +52,7 @@ sub dodate {
 }
 
 sub procinner {
+	my $in = shift;
 	my $out = shift;
 
 	my $odm = 0;
@@ -61,7 +62,7 @@ sub procinner {
 	my @meanings = ();
 	my $meaningtext = "";
 
-	while(<>) {
+	while(<$in>) {
 		chomp;
 		if (m!<h1 style="font-family: Verdana, sans-serif;">([^<]*)</h1>!) {
 			print STDERR "-> $_ : word: $1\n" if ($debug);
@@ -89,10 +90,13 @@ sub procinner {
 				$osobazm = "$1";
 				$datazm = dodate($2);
 			} 
-			if (m!<b>([0-9]*)\. ($word)</b>!i) {
+			if (m!<b>([0-9]*)\. ([^<]*)</b>!i) {
 				print STDERR "-> $_ : $2 : $1\n" if ($debug);
 				$haslo = "$2";
 				$num = $1;
+				if ($haslo ne $word) {
+					print $out "  <!-- word: $word; entry: $haslo -->\n";
+				}
 				$eschaslo = uri_escape_utf8($haslo);
    				print $out "  <sjp:forma rdf:about=\"http://www.sjp.pl/co/$eschaslo#$num\">\n";
 				print $out "    <rdfs:seeAlso rdf:resource=\"http://www.sjp.pl/co/$escword\"/>\n";
@@ -128,6 +132,7 @@ sub procinner {
 					for (my $i = 0; $i < $#meanings+1; $i++) {
 						my $nodeid = "h-$escword-$num-" . ($i + 1);
 						$nodeid =~ s/\%//g;
+						$meanings[$i] =~ s/\;$//;
 						print $out "    <rdfs:seeAlso rdf:nodeID=\"$nodeid\"/>\n";
 						$meaningtext .= "  <sjp:definition rdf:ID=\"$nodeid\">$meanings[$i]</sjp:definition>\n";
 					}
@@ -163,6 +168,19 @@ sub procinner {
 					print $out "    <gold:hasForm>$form</gold:hasForm>\n";
 				}
 			}
+			if ($odm == 1 && m!<tr><th scope="row" valign="top">\(ręcznie dopisane\) <tt>~</tt></th><td>([^<]*)</td></tr>!) {
+				print STDERR "1: $1\n";
+				my $formy = $1;
+				print $out "    <sjp:odmiana>\n";
+				print $out "      <rdf:Description>\n";
+				print $out "        <sjp:formy>$formy</sjp:formy>\n";
+				print $out "      </rdf:Description>\n";
+				print $out "    </sjp:odmiana>\n";
+				for my $form (split/, /, $formy) {
+					print $out "    <gold:hasForm>$form</gold:hasForm>\n";
+				}
+			}
+
 		}
 	}
 }
@@ -187,6 +205,19 @@ sub split_defs {
 }
 
 doheader ($fh);
-procinner ($fh);
+
+if ($#ARGV < 0) {
+	my $file = "/dev/stdin";
+	binmode $file, ":encoding(iso-8859-2)";
+	procinner ($file, $fh);
+} else {
+	for my $filename (@ARGV) {
+		my $file;
+		open ($file, "<$filename");
+		binmode $file, ":encoding(iso-8859-2)";
+		procinner ($file, $fh);
+		close $file;
+	}
+}
 dofooter ($fh);
 
