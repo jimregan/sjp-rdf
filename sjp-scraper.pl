@@ -27,6 +27,8 @@ sub doheader {
 	print $out "    xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n";
 	print $out "    xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"\n";
 	print $out "    xmlns:gold=\"http://www.linguistics-ontology.org/bibliography/bibliography.owl#\"\n";
+	print $out "    xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n";
+	print $out "    xmlns:sioc=\"http://rdfs.org/sioc/ns#\"\n";
 	print $out "    xmlns:sjp=\"http://example.com/sjp/\"\n";
 	print $out "    xml:lang=\"pl\">\n";
 }
@@ -37,11 +39,27 @@ sub dofooter {
 	print $out "</rdf:RDF>\n";
 }
 
+sub dodate {
+	my $in = shift;
+	my $out;
+
+	if ($in =~ /([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9]) ([0-9][0-9]):([0-9][0-9])/) {
+		$out = "$1-$2-$3T$4:$5";
+	} else {
+		$out = $in;
+	}
+	return $out;
+}
+
 sub procinner {
 	my $out = shift;
 
 	my $odm = 0;
 	my ($haslo, $eschaslo, $num);
+	my ($datazm, $osobazm);
+
+	my @meanings = ();
+	my $meaningtext = "";
 
 	while(<>) {
 		chomp;
@@ -60,8 +78,17 @@ sub procinner {
 				$reading = 0;
 				$odm = 0;
    				print $out "  </sjp:forma>\n";
+				if ($meaningtext ne "") {
+					print $out $meaningtext;
+					$meaningtext = "";
+				}
 			}
 
+			if (m!<div class="v" style="float: right; color: #68b;">([^,]*), <span style="font-size: x-small;">([^<]*)</span></div>!i) {
+				print STDERR "os. -> $1, dat. $2 \n" if ($debug);
+				$osobazm = "$1";
+				$datazm = dodate($2);
+			} 
 			if (m!<b>([0-9]*)\. ($word)</b>!i) {
 				print STDERR "-> $_ : $2 : $1\n" if ($debug);
 				$haslo = "$2";
@@ -69,6 +96,12 @@ sub procinner {
 				$eschaslo = uri_escape_utf8($haslo);
    				print $out "  <sjp:forma rdf:about=\"http://www.sjp.pl/co/$eschaslo#$num\">\n";
 				print $out "    <rdfs:seeAlso rdf:resource=\"http://www.sjp.pl/co/$escword\"/>\n";
+				if ($osobazm) {
+					print $out "    <sioc:has_moderator>$osobazm</sioc:has_moderator>\n";
+				}
+				if ($datazm) {
+					print $out "    <sioc:last_activity_date rdf:datatype=\"xsd:dateTime\">$datazm</sioc:last_activity_date>\n";
+				}
 			}
 			if (m!<b>($word)</b>!i) {
 				print STDERR "has. -> $_ : $1\n" if ($debug);
@@ -82,6 +115,22 @@ sub procinner {
 					print $out "    <sjp:dopuszczalnosc rdf:datatype=\"xsd:Boolean\">true</sjp:dopuszczalnosc>\n";
 				} else {
 					print $out "    <sjp:dopuszczalnosc rdf:datatype=\"xsd:Boolean\">false</sjp:dopuszczalnosc>\n";
+				}
+			}
+			if (m!<tr><th scope="row" width="30%" valign="top">znaczenie:</th><td>([^<]*)<br />!i) {
+				print STDERR "znacz. -> $_ : $1\n" if ($debug);
+				my $znacz = $1;
+				if ($znacz eq "brak") {
+					# do nothing
+				} else {
+					print $out "    <rdfs:comment>$znacz</rdfs:comment>\n";
+					@meanings = split_defs($znacz);
+					for (my $i = 0; $i < $#meanings+1; $i++) {
+						my $nodeid = "h-$escword-$num-" . ($i + 1);
+						$nodeid =~ s/\%//g;
+						print $out "    <rdfs:seeAlso rdf:nodeID=\"$nodeid\"/>\n";
+						$meaningtext .= "  <sjp:definition rdf:ID=\"$nodeid\">$meanings[$i]</sjp:definition>\n";
+					}
 				}
 			}
 
