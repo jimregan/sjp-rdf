@@ -49,7 +49,7 @@ sub procinner {
 			print STDERR "-> $_ : word: $1\n" if ($debug);
 			$word = $1;
 			$escword = uri_escape_utf8($word);
-			print $out "  <sjp:haslo rdf:about=\"http://www.sjp.pl/$escword\" rdfs:label=\"$escword\"/>\n";
+			print $out "  <sjp:haslo rdf:about=\"http://www.sjp.pl/co/$escword\" rdfs:label=\"$escword\"/>\n";
 		}
 
 		if (defined $word) {
@@ -67,8 +67,8 @@ sub procinner {
 				$haslo = "$2";
 				$num = $1;
 				$eschaslo = uri_escape_utf8($haslo);
-   				print $out "  <sjp:forma rdf:about=\"http://www.sjp.pl/$eschaslo#$num\">\n";
-				print $out "    <rdfs:seeAlso rdf:resource=\"http://www.sjp.pl/$escword\"/>\n";
+   				print $out "  <sjp:forma rdf:about=\"http://www.sjp.pl/co/$eschaslo#$num\">\n";
+				print $out "    <rdfs:seeAlso rdf:resource=\"http://www.sjp.pl/co/$escword\"/>\n";
 			}
 			if (m!<b>($word)</b>!i) {
 				print STDERR "has. -> $_ : $1\n" if ($debug);
@@ -116,6 +116,25 @@ sub procinner {
 			}
 		}
 	}
+}
+
+# This seems a little too simple, will probably need to change it later.
+sub split_defs {
+	my $def = shift;
+	my @defs = ();
+	if (substr ($def, 0, 3) eq "1. ") {
+	        my ($car, $cdr);
+	        my $rest = substr($def, 3);
+	        my $next = 2;
+	        do {
+	                ($car, $cdr) = split / $next\. /, $rest;
+	                push @defs, $car;
+	                $rest = $cdr;
+	                $next++;
+	        } while ($def =~ / $next\. /);
+	        push @defs, $cdr;
+	}
+	return @defs;
 }
 
 doheader ($fh);
