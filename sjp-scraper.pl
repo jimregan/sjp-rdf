@@ -51,6 +51,38 @@ sub dodate {
 	return $out;
 }
 
+sub myescape {
+	my $in = shift;
+
+	$in =~ s/ /\+/g;
+	$in =~ s/Ą/%A1/g;
+	$in =~ s/ą/%B1/g;
+	$in =~ s/Ć/%C6/g;
+	$in =~ s/ć/%E6/g;
+	$in =~ s/Ż/%AF/g;
+	$in =~ s/ż/%BF/g;
+	$in =~ s/Ź/%AC/g;
+	$in =~ s/ź/%BC/g;
+	$in =~ s/Ś/%A6/g;
+	$in =~ s/ś/%B6/g;
+	$in =~ s/Ę/%CA/g;
+	$in =~ s/ę/%EA/g;
+	$in =~ s/Ł/%A3/g;
+	$in =~ s/ł/%B3/g;
+	$in =~ s/Á/%C1/g;
+	$in =~ s/á/%E1/g;
+	$in =~ s/É/%C9/g;
+	$in =~ s/é/%E9/g;
+	$in =~ s/Ó/%D3/g;
+	$in =~ s/ó/%F3/g;
+	$in =~ s/Í/%CD/g;
+	$in =~ s/í/%ED/g;
+	$in =~ s/Ú/%DA/g;
+	$in =~ s/ú/%FA/g;
+
+	return $in;
+}
+
 sub procinner {
 	my $in = shift;
 	my $out = shift;
@@ -67,8 +99,8 @@ sub procinner {
 		if (m!<h1 style="font-family: Verdana, sans-serif;">([^<]*)</h1>!) {
 			print STDERR "-> $_ : word: $1\n" if ($debug);
 			$word = $1;
-			$escword = uri_escape_utf8($word);
-			print $out "  <sjp:haslo rdf:about=\"http://www.sjp.pl/co/$escword\" rdfs:label=\"$escword\"/>\n";
+			$escword = myescape($word);
+			print $out "  <sjp:haslo rdf:about=\"http://www.sjp.pl/co/$escword\" rdfs:label=\"$word\"/>\n";
 		}
 
 		if (defined $word) {
@@ -97,8 +129,9 @@ sub procinner {
 				if ($haslo ne $word) {
 					print $out "  <!-- word: $word; entry: $haslo -->\n";
 				}
-				$eschaslo = uri_escape_utf8($haslo);
+				$eschaslo = myescape($haslo);
    				print $out "  <sjp:forma rdf:about=\"http://www.sjp.pl/co/$eschaslo#$num\">\n";
+   				print $out "    <rdfs:label>$haslo</rdfs:label>\n";
 				print $out "    <rdfs:seeAlso rdf:resource=\"http://www.sjp.pl/co/$escword\"/>\n";
 				if ($osobazm) {
 					print $out "    <sioc:has_moderator>$osobazm</sioc:has_moderator>\n";
@@ -132,7 +165,8 @@ sub procinner {
 					for (my $i = 0; $i < $#meanings+1; $i++) {
 						my $nodeid = "h-$escword-$num-" . ($i + 1);
 						$nodeid =~ s/\%//g;
-						$meanings[$i] =~ s/\;$//;
+						$nodeid =~ s/\+/-/g;
+						#$meanings[$i] =~ s/\;$//;
 						print $out "    <rdfs:seeAlso rdf:nodeID=\"$nodeid\"/>\n";
 						$meaningtext .= "  <sjp:definition rdf:ID=\"$nodeid\">$meanings[$i]</sjp:definition>\n";
 					}
