@@ -1,0 +1,7 @@
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-bronze_medal-noun-1> <http://www.w3.org/2006/03/wn/wn20/schema/gloss> "medal z br\u0105zu za zdobycie trzeciego miejsca"@pl .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-bronze_medal-noun-1> <http://www.w3.org/2000/01/rdf-schema#label> "br\u0105zowy medal"@pl.
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-bronze-noun-2> <http://www.w3.org/2006/03/wn/wn20/schema/gloss> "rze\u017aba z br\u0105zu"@pl .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-bronze-noun-2> <http://www.w3.org/2000/01/rdf-schema#label> "br\u0105z"@pl .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-iron_maiden-noun-1> <http://www.w3.org/2002/07/owl#sameAs> <http://dbpedia.org/resource/Iron_maiden_(torture)> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-iron_maiden-noun-1> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/%C5%BBelazna_dziewica> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-bota-noun-1> <http://www.w3.org/2002/07/owl#sameAs> <http://dbpedia.org/resource/Bota_bag> .
