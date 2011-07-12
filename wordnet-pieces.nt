@@ -2,6 +2,27 @@
 <http://www.w3.org/2006/03/wn/wn20/instances/synset-bronze_medal-noun-1> <http://www.w3.org/2000/01/rdf-schema#label> "br\u0105zowy medal"@pl.
 <http://www.w3.org/2006/03/wn/wn20/instances/synset-bronze-noun-2> <http://www.w3.org/2006/03/wn/wn20/schema/gloss> "rze\u017aba z br\u0105zu"@pl .
 <http://www.w3.org/2006/03/wn/wn20/instances/synset-bronze-noun-2> <http://www.w3.org/2000/01/rdf-schema#label> "br\u0105z"@pl .
+<http://www.w3.org/2006/03/wn/wn20/instances/wordsense-bronze-noun-2> <http://www.w3.org/2000/01/rdf-schema#label> "br\u0105z"@pl .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-ironworks-noun-1> <http://www.w3.org/2006/03/wn/wn20/schema/gloss> "zak\u0142ad przemys\u0142owy zajmuj\u0105cy si\u0119 produkcj\u0105 wyrob\u00f3w \u017celaznych"@pl .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-ironworks-noun-1> <http://www.w3.org/2000/01/rdf-schema#label> "huta \u017celaza"@pl .
+<http://www.w3.org/2006/03/wn/wn20/instances/wordsense-ironworks-noun-1> <http://www.w3.org/2000/01/rdf-schema#label> "huta \u017celaza"@pl .
+<http://www.w3.org/2006/03/wn/wn20/instances/wordsense-smokeless_powder-noun-1> <http://www.w3.org/2000/01/rdf-schema#label> "proch bezdymny"@pl .
+<http://www.w3.org/2006/03/wn/wn20/instances/wordsense-Ballistite-noun-1> <http://www.w3.org/2000/01/rdf-schema#label> "Balistyt"@pl .
+<http://www.w3.org/2006/03/wn/wn20/instances/wordsense-iron_maiden-noun-1> <http://www.w3.org/2000/01/rdf-schema#label> "\u017celazna dziewica"@pl .
 <http://www.w3.org/2006/03/wn/wn20/instances/synset-iron_maiden-noun-1> <http://www.w3.org/2002/07/owl#sameAs> <http://dbpedia.org/resource/Iron_maiden_(torture)> .
 <http://www.w3.org/2006/03/wn/wn20/instances/synset-iron_maiden-noun-1> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/%C5%BBelazna_dziewica> .
 <http://www.w3.org/2006/03/wn/wn20/instances/synset-bota-noun-1> <http://www.w3.org/2002/07/owl#sameAs> <http://dbpedia.org/resource/Bota_bag> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-smokeless_powder-noun-1> <http://www.w3.org/2002/07/owl#sameAs> <http://dbpedia.org/resource/Ballistite> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-smokeless_powder-noun-1> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/Balistyt> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-ironworks-noun-1> <http://www.w3.org/2002/07/owl#sameAs> <http://dbpedia.org/resource/Ironworks> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-jack-noun-8> <http://www.w3.org/2002/07/owl#sameAs> <http://dbpedia.org/resource/Jack_(playing_card)> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-jack-noun-8> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/Walet> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-jack-noun-9> <http://www.w3.org/2002/07/owl#sameAs> <http://dbpedia.org/resource/Jack_(device)> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-jack-noun-9> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/D%C5%BAwignik> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-jack-noun-5> <http://www.w3.org/2002/07/owl#sameAs> <http://dbpedia.org/resource/Jack_(connector)> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-jack-noun-7> <http://www.w3.org/2004/02/skos/core#broadMatch> <http://dbpedia.org/resource/Maritime_flag> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-explosive-noun-1> <http://www.w3.org/2002/07/owl#sameAs> <http://dbpedia.org/resource/Explosive_material> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-explosive-noun-1> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/Materia%C5%82_wybuchowy> .
+<http://www.w3.org/2006/03/wn/wn20/instances/wordsense-explosive-noun-1> <http://www.w3.org/2000/01/rdf-schema#label> "materia\u0142 wybuchowy"@pl .
+<http://www.w3.org/2006/03/wn/wn20/instances/wordsense-explosive_device-noun-1> <http://www.w3.org/2000/01/rdf-schema#label> "urz\u0105dzenie wybuchowe"@pl .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-explosive_device-noun-1> <http://www.w3.org/2000/01/rdf-schema#label> "urz\u0105dzenie wybuchowe"@pl .
