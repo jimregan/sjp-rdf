@@ -26,3 +26,14 @@
 <http://www.w3.org/2006/03/wn/wn20/instances/wordsense-explosive-noun-1> <http://www.w3.org/2000/01/rdf-schema#label> "materia\u0142 wybuchowy"@pl .
 <http://www.w3.org/2006/03/wn/wn20/instances/wordsense-explosive_device-noun-1> <http://www.w3.org/2000/01/rdf-schema#label> "urz\u0105dzenie wybuchowe"@pl .
 <http://www.w3.org/2006/03/wn/wn20/instances/synset-explosive_device-noun-1> <http://www.w3.org/2000/01/rdf-schema#label> "urz\u0105dzenie wybuchowe"@pl .
+<http://www.w3.org/2006/03/wn/wn20/instances/wordsense-bomb-noun-1> <http://www.w3.org/2000/01/rdf-schema#label> "bomba"@pl .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-bomb-noun-1> <http://www.w3.org/2000/01/rdf-schema#label> "bomba"@pl .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-bomb-noun-1> <http://www.w3.org/2002/07/owl#sameAs> <http://dbpedia.org/resource/Bomb> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-bomb-noun-1> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/Bomba> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-weaponry-noun-1> <http://www.w3.org/2004/02/skos/core#broadMatch> <http://pl.dbpedia.org/resource/Uzbrojenie> .
+<http://www.w3.org/2006/03/wn/wn20/instances/wordsense-weaponry-noun-1> <http://www.w3.org/2000/01/rdf-schema#label> "uzbrojenie"@pl .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-weaponry-noun-1> <http://www.w3.org/2006/03/wn/wn20/schema/gloss> "uzbrojenie (zbiorowo)"@pl .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-vote-noun-1> <http://www.w3.org/2002/07/owl#sameAs> <http://dbpedia.org/resource/Voting> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-vote-noun-1> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/G%C5%82osowanie> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-vote-noun-5> <http://www.w3.org/2002/07/owl#sameAs> <http://dbpedia.org/resource/Voter_turnout> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-vote-noun-5> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/Frekwencja_wyborcza> .

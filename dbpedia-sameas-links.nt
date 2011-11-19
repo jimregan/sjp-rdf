@@ -45,4 +45,7 @@
 <http://www.sjp.pl/co/Achab#1> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/Achab> .
 <http://www.sjp.pl/co/Achaja#1> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/Nomos_Achaja> .
 <http://www.sjp.pl/co/Achajowie#1> <http://www.w3.org/2002/07/owl#sameAs> <http://www.sjp.pl/co/Achajczycy#1> .
-
+<http://www.sjp.pl/co/Achates#1> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/Achates> .
+<http://www.sjp.pl/co/Achaz#1> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/Achaz> .
+<http://www.sjp.pl/co/Acheron#1> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/Acheron_%28mitologia%29> .
+<http://www.sjp.pl/co/Acheront#1> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/Acheron_%28mitologia%29> .
