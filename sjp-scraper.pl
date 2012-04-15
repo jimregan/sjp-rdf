@@ -9,14 +9,6 @@ use URI::Escape;
 use HTML::Entities;
 
 open (my $fh, ">>/tmp/writer.rdf");
-my ($word, $escword);
-my $reading = 0;
-my $debug = 1;
-
-binmode STDIN, ":encoding(iso-8859-2)";
-binmode STDOUT, ":utf8";
-binmode STDERR, ":utf8";
-binmode $fh, ":utf8";
 
 sub doheader {
 	my $out = shift;
@@ -32,6 +24,16 @@ sub doheader {
 	print $out "    xmlns:sjp=\"http://example.com/sjp/\"\n";
 	print $out "    xml:lang=\"pl\">\n";
 }
+
+
+my ($word, $escword);
+my $reading = 0;
+my $debug = 1;
+
+binmode STDIN, ":encoding(iso-8859-2)";
+binmode STDOUT, ":utf8";
+binmode STDERR, ":utf8";
+binmode $fh, ":utf8";
 
 sub dofooter {
 	my $out = shift;
@@ -71,6 +73,11 @@ sub myescape {
 	$in =~ s/ł/%B3/g;
 	$in =~ s/Á/%C1/g;
 	$in =~ s/á/%E1/g;
+	$in =~ s/ń/%F1/g;
+	$in =~ s/Ń/%D1/g;
+	$in =~ s/ö/%F6/g;
+	$in =~ s/ü/%FC/g;
+	$in =~ s/ë/%EB/g;
 	$in =~ s/É/%C9/g;
 	$in =~ s/é/%E9/g;
 	$in =~ s/Ó/%D3/g;
@@ -223,6 +230,7 @@ sub procinner {
 sub split_defs {
 	my $def = shift;
 	my @defs = ();
+	$def =~ s/^\[czytaj[^\]]\]*\s?//;
 	if (substr ($def, 0, 3) eq "1. ") {
 	        my ($car, $cdr);
 	        my $rest = substr($def, 3);
@@ -238,12 +246,11 @@ sub split_defs {
 	return @defs;
 }
 
-doheader ($fh);
+doheader ($fh); 
 
 if ($#ARGV < 0) {
-	my $file = "/dev/stdin";
-	binmode $file, ":encoding(iso-8859-2)";
-	procinner ($file, $fh);
+#	binmode STDIN, ":encoding(iso-8859-2)";
+	procinner (*STDIN, $fh);
 } else {
 	for my $filename (@ARGV) {
 		my $file;
@@ -253,5 +260,5 @@ if ($#ARGV < 0) {
 		close $file;
 	}
 }
-dofooter ($fh);
+END{ dofooter ($fh); }
 

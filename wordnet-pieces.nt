@@ -37,3 +37,6 @@
 <http://www.w3.org/2006/03/wn/wn20/instances/synset-vote-noun-1> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/G%C5%82osowanie> .
 <http://www.w3.org/2006/03/wn/wn20/instances/synset-vote-noun-5> <http://www.w3.org/2002/07/owl#sameAs> <http://dbpedia.org/resource/Voter_turnout> .
 <http://www.w3.org/2006/03/wn/wn20/instances/synset-vote-noun-5> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/Frekwencja_wyborcza> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-yard-noun-1> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/Jard> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-yard-noun-1> <http://www.w3.org/2002/07/owl#sameAs> <http://dbpedia.org/resource/Yard> .
+<http://www.w3.org/2006/03/wn/wn20/instances/synset-yard-noun-2> <http://www.w3.org/2002/07/owl#sameAs> <http://dbpedia.org/resource/Yard_%28land%29> .
