@@ -127,7 +127,7 @@ sub procinner {
 				$osobazm = "$1";
 				$datazm = dodate($2);
 			} 
-			if (m!<b>([0-9]*)\. ([^<]*)</b>!i) {
+			if (m/<b>([0-9]*)\. ([^<]*)<\/b>/i) {
 				print STDERR "-> $_ : $2 : $1\n" if ($debug);
 				$haslo = "$2";
 				$num = $1;
