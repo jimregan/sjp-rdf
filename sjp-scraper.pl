@@ -9,6 +9,14 @@ use URI::Escape;
 use HTML::Entities;
 
 open (my $fh, ">>/tmp/writer.rdf");
+my ($word, $escword);
+my $reading = 0;
+my $debug = 1;
+
+binmode STDIN, ":encoding(iso-8859-2)";
+binmode STDOUT, ":utf8";
+binmode STDERR, ":utf8";
+binmode $fh, ":utf8";
 
 sub doheader {
 	my $out = shift;
@@ -24,16 +32,6 @@ sub doheader {
 	print $out "    xmlns:sjp=\"http://example.com/sjp/\"\n";
 	print $out "    xml:lang=\"pl\">\n";
 }
-
-
-my ($word, $escword);
-my $reading = 0;
-my $debug = 1;
-
-binmode STDIN, ":encoding(iso-8859-2)";
-binmode STDOUT, ":utf8";
-binmode STDERR, ":utf8";
-binmode $fh, ":utf8";
 
 sub dofooter {
 	my $out = shift;
@@ -174,8 +172,8 @@ sub procinner {
 						$nodeid =~ s/\%//g;
 						$nodeid =~ s/\+/-/g;
 						#$meanings[$i] =~ s/\;$//;
-						print $out "    <rdfs:seeAlso rdf:nodeID=\"$nodeid\"/>\n";
-						$meaningtext .= "  <sjp:definition rdf:ID=\"$nodeid\">$meanings[$i]</sjp:definition>\n";
+						print $out "    <rdfs:seeAlso rdf:ID=\"${nodeid}\"/>\n";
+						$meaningtext .= "  <sjp:definition rdf:about=\"${nodeid}\">$meanings[$i]</sjp:definition>\n";
 					}
 				}
 			}
@@ -236,21 +234,22 @@ sub split_defs {
 	        my $rest = substr($def, 3);
 	        my $next = 2;
 	        do {
-	                ($car, $cdr) = split / $next\. /, $rest;
+	                ($car, $cdr) = split /;? $next\. /, $rest;
 	                push @defs, $car;
 	                $rest = $cdr;
 	                $next++;
-	        } while ($def =~ / $next\. /);
+	        } while ($def =~ /;? $next\. /);
 	        push @defs, $cdr;
 	}
 	return @defs;
 }
 
-doheader ($fh); 
+doheader ($fh);
 
 if ($#ARGV < 0) {
-#	binmode STDIN, ":encoding(iso-8859-2)";
-	procinner (*STDIN, $fh);
+	my $file = "/dev/stdin";
+	binmode $file, ":encoding(iso-8859-2)";
+	procinner ($file, $fh);
 } else {
 	for my $filename (@ARGV) {
 		my $file;
@@ -260,5 +259,5 @@ if ($#ARGV < 0) {
 		close $file;
 	}
 }
-END{ dofooter ($fh); }
+dofooter ($fh);
 
