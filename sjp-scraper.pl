@@ -145,13 +145,13 @@ sub procinner {
 					print $out "    <sioc:last_activity_date rdf:datatype=\"xsd:dateTime\">$datazm</sioc:last_activity_date>\n";
 				}
 			}
-			if (m!<b>($word)</b>!i) {
+			if (/<b>($word)<\/b>/i) {
 				print STDERR "has. -> $_ : $1\n" if ($debug);
 				$haslo = "$1";
 				$eschaslo = uri_escape_utf8($haslo);
 			}
 
-			if (m!<tr><th scope="row" nowrap="nowrap">dopuszczalność w grach:</th><td>(tak|nie)</td></tr>!i) {
+			if (/<tr><th scope="row" nowrap="nowrap">dopuszczalność w grach:<\/th><td>(tak|nie)<\/td><\/tr>/i) {
 				print STDERR "dop. -> $_ : $1\n" if ($debug);
 				if ($1 eq "tak") {
 					print $out "    <sjp:dopuszczalnosc rdf:datatype=\"xsd:Boolean\">true</sjp:dopuszczalnosc>\n";
@@ -159,7 +159,7 @@ sub procinner {
 					print $out "    <sjp:dopuszczalnosc rdf:datatype=\"xsd:Boolean\">false</sjp:dopuszczalnosc>\n";
 				}
 			}
-			if (m!<tr><th scope="row" width="30%" valign="top">znaczenie:</th><td>([^<]*)<br />!i) {
+			if (/<tr><th scope="row" width="30%" valign="top">znaczenie:<\/th><td>([^<]*)<br \/>/i) {
 				print STDERR "znacz. -> $_ : $1\n" if ($debug);
 				my $znacz = $1;
 				if ($znacz eq "brak") {
@@ -178,12 +178,12 @@ sub procinner {
 				}
 			}
 
-			if (m!<tr><th scope="row" valign="top">występowanie:</th><td>([^<]*)</td></tr>!) {
+			if (/<tr><th scope="row" valign="top">występowanie:<\/th><td>([^<]*)<\/td><\/tr>/) {
 				print STDERR "wys. -> $_ : citation\n" if ($debug);
 				my $cite = decode_entities($1);
 				print $out "    <sjp:wystepowanie>$cite</sjp:wystepowanie>\n";
 			}
-			if (m!<tr><th scope="row">odmienność:</th><td>(tak|nie)</td></tr>!i) {
+			if (/<tr><th scope="row">odmienność:<\/th><td>(tak|nie)<\/td><\/tr>/i) {
 				print STDERR "odm. -> $_ : $1\n" if ($debug);
 				if ($1 eq "tak") {
 					$odm = 1;
