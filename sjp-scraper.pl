@@ -135,14 +135,23 @@ sub procinner {
 					print $out "  <!-- word: $word; entry: $haslo -->\n";
 				}
 				$eschaslo = myescape($haslo);
-   				print $out "  <sjp:forma rdf:about=\"http://www.sjp.pl/co/$eschaslo#$num\">\n";
-   				print $out "    <rdfs:label>$haslo</rdfs:label>\n";
-				print $out "    <rdfs:seeAlso rdf:resource=\"http://www.sjp.pl/co/$escword\"/>\n";
+
+				$subj = $rdf->new_resource("sjpf:${eschaslo}-${num}");
+				my $haslor = $rdf->new_literal($haslo, 'pl');
+				$rdf->assert_resource($subj, 'rdfs:type', 'lemon:sense');
+				$rdf->assert_literal($subj, 'lemon:writtenRep', $haslor);
+#   				print $out "  <sjp:forma rdf:about=\"http://www.sjp.pl/co/$eschaslo#$num\">\n";
+#   				print $out "    <rdfs:label>$haslo</rdfs:label>\n";
+#				print $out "    <rdfs:seeAlso rdf:resource=\"http://www.sjp.pl/co/$escword\"/>\n";
 				if ($osobazm) {
-					print $out "    <sioc:has_moderator>$osobazm</sioc:has_moderator>\n";
+					my $osobar = $rdf->new_literal($osobazm, 'pl');
+					$rdf->assert_literal($subj, 'sioc:has_moderator', $osobar);
+#					print $out "    <sioc:has_moderator>$osobazm</sioc:has_moderator>\n";
 				}
 				if ($datazm) {
-					print $out "    <sioc:last_activity_date rdf:datatype=\"xsd:dateTime\">$datazm</sioc:last_activity_date>\n";
+					my $dater = $rdf->new_literal($datazm, undef, 'xsd:dateTime');
+					$rdf->assert_literal($subj, 'sioc:last_activity_date', $dater);
+#					print $out "    <sioc:last_activity_date rdf:datatype=\"xsd:dateTime\">$datazm</sioc:last_activity_date>\n";
 				}
 			}
 			if (/<b>($word)<\/b>/i) {
