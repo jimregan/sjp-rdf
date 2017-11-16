@@ -51,43 +51,6 @@ sub dodate {
 	return $out;
 }
 
-sub myescape {
-	my $in = shift;
-
-	$in =~ s/ /\+/g;
-	$in =~ s/Ą/%A1/g;
-	$in =~ s/ą/%B1/g;
-	$in =~ s/Ć/%C6/g;
-	$in =~ s/ć/%E6/g;
-	$in =~ s/Ż/%AF/g;
-	$in =~ s/ż/%BF/g;
-	$in =~ s/Ź/%AC/g;
-	$in =~ s/ź/%BC/g;
-	$in =~ s/Ś/%A6/g;
-	$in =~ s/ś/%B6/g;
-	$in =~ s/Ę/%CA/g;
-	$in =~ s/ę/%EA/g;
-	$in =~ s/Ł/%A3/g;
-	$in =~ s/ł/%B3/g;
-	$in =~ s/Á/%C1/g;
-	$in =~ s/á/%E1/g;
-	$in =~ s/ń/%F1/g;
-	$in =~ s/Ń/%D1/g;
-	$in =~ s/ö/%F6/g;
-	$in =~ s/ü/%FC/g;
-	$in =~ s/ë/%EB/g;
-	$in =~ s/É/%C9/g;
-	$in =~ s/é/%E9/g;
-	$in =~ s/Ó/%D3/g;
-	$in =~ s/ó/%F3/g;
-	$in =~ s/Í/%CD/g;
-	$in =~ s/í/%ED/g;
-	$in =~ s/Ú/%DA/g;
-	$in =~ s/ú/%FA/g;
-
-	return $in;
-}
-
 sub procinner {
 	my $in = shift;
 	my $out = shift;
@@ -104,7 +67,7 @@ sub procinner {
 		if (m!<h1 style="font-family: Verdana, sans-serif;">([^<]*)</h1>!) {
 			print STDERR "-> $_ : word: $1\n" if ($debug);
 			$word = $1;
-			$escword = myescape($word);
+			$escword = uri_escape_utf8($word);
 			print $out "  <sjp:haslo rdf:about=\"http://www.sjp.pl/co/$escword\" rdfs:label=\"$word\"/>\n";
 		}
 
@@ -127,16 +90,15 @@ sub procinner {
 				$osobazm = "$1";
 				$datazm = dodate($2);
 			} 
-			if (m/<b>([0-9]*)\. ([^<]*)<\/b>/i) {
+			if (m!<b>([0-9]*)\. ([^<]*)</b>!i) {
 				print STDERR "-> $_ : $2 : $1\n" if ($debug);
 				$haslo = "$2";
 				$num = $1;
 				if ($haslo ne $word) {
 					print $out "  <!-- word: $word; entry: $haslo -->\n";
 				}
-				$eschaslo = myescape($haslo);
+				$eschaslo = uri_escape_utf8($haslo);
    				print $out "  <sjp:forma rdf:about=\"http://www.sjp.pl/co/$eschaslo#$num\">\n";
-   				print $out "    <rdfs:label>$haslo</rdfs:label>\n";
 				print $out "    <rdfs:seeAlso rdf:resource=\"http://www.sjp.pl/co/$escword\"/>\n";
 				if ($osobazm) {
 					print $out "    <sioc:has_moderator>$osobazm</sioc:has_moderator>\n";
@@ -145,13 +107,13 @@ sub procinner {
 					print $out "    <sioc:last_activity_date rdf:datatype=\"xsd:dateTime\">$datazm</sioc:last_activity_date>\n";
 				}
 			}
-			if (/<b>($word)<\/b>/i) {
+			if (m!<b>($word)</b>!i) {
 				print STDERR "has. -> $_ : $1\n" if ($debug);
 				$haslo = "$1";
 				$eschaslo = uri_escape_utf8($haslo);
 			}
 
-			if (/<tr><th scope="row" nowrap="nowrap">dopuszczalność w grach:<\/th><td>(tak|nie)<\/td><\/tr>/i) {
+			if (m!<tr><th scope="row" nowrap="nowrap">dopuszczalność w grach:</th><td>(tak|nie)</td></tr>!i) {
 				print STDERR "dop. -> $_ : $1\n" if ($debug);
 				if ($1 eq "tak") {
 					print $out "    <sjp:dopuszczalnosc rdf:datatype=\"xsd:Boolean\">true</sjp:dopuszczalnosc>\n";
@@ -159,7 +121,7 @@ sub procinner {
 					print $out "    <sjp:dopuszczalnosc rdf:datatype=\"xsd:Boolean\">false</sjp:dopuszczalnosc>\n";
 				}
 			}
-			if (/<tr><th scope="row" width="30%" valign="top">znaczenie:<\/th><td>([^<]*)<br \/>/i) {
+			if (m!<tr><th scope="row" width="30%" valign="top">znaczenie:</th><td>([^<]*)<br />!i) {
 				print STDERR "znacz. -> $_ : $1\n" if ($debug);
 				my $znacz = $1;
 				if ($znacz eq "brak") {
@@ -170,20 +132,19 @@ sub procinner {
 					for (my $i = 0; $i < $#meanings+1; $i++) {
 						my $nodeid = "h-$escword-$num-" . ($i + 1);
 						$nodeid =~ s/\%//g;
-						$nodeid =~ s/\+/-/g;
-						#$meanings[$i] =~ s/\;$//;
-						print $out "    <rdfs:seeAlso rdf:ID=\"${nodeid}\"/>\n";
-						$meaningtext .= "  <sjp:definition rdf:about=\"${nodeid}\">$meanings[$i]</sjp:definition>\n";
+						$meanings[$i] =~ s/\;$//;
+						print $out "    <rdfs:seeAlso rdf:nodeID=\"$nodeid\"/>\n";
+						$meaningtext .= "  <sjp:definition rdf:ID=\"$nodeid\">$meanings[$i]</sjp:definition>\n";
 					}
 				}
 			}
 
-			if (/<tr><th scope="row" valign="top">występowanie:<\/th><td>([^<]*)<\/td><\/tr>/) {
+			if (m!<tr><th scope="row" valign="top">występowanie:</th><td>([^<]*)</td></tr>!) {
 				print STDERR "wys. -> $_ : citation\n" if ($debug);
 				my $cite = decode_entities($1);
 				print $out "    <sjp:wystepowanie>$cite</sjp:wystepowanie>\n";
 			}
-			if (/<tr><th scope="row">odmienność:<\/th><td>(tak|nie)<\/td><\/tr>/i) {
+			if (m!<tr><th scope="row">odmienność:</th><td>(tak|nie)</td></tr>!i) {
 				print STDERR "odm. -> $_ : $1\n" if ($debug);
 				if ($1 eq "tak") {
 					$odm = 1;
@@ -228,17 +189,16 @@ sub procinner {
 sub split_defs {
 	my $def = shift;
 	my @defs = ();
-	$def =~ s/^\[czytaj[^\]]\]*\s?//;
 	if (substr ($def, 0, 3) eq "1. ") {
 	        my ($car, $cdr);
 	        my $rest = substr($def, 3);
 	        my $next = 2;
 	        do {
-	                ($car, $cdr) = split /;? $next\. /, $rest;
+	                ($car, $cdr) = split / $next\. /, $rest;
 	                push @defs, $car;
 	                $rest = $cdr;
 	                $next++;
-	        } while ($def =~ /;? $next\. /);
+	        } while ($def =~ / $next\. /);
 	        push @defs, $cdr;
 	}
 	return @defs;
